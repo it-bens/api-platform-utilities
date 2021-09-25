@@ -20,6 +20,7 @@
   "require-dev": {
     "captainhook/plugin-composer": "^5.3",
     "it-bens/object-transformer-test-utilities": "*@dev",
+    "php-coveralls/php-coveralls": "^2.4",
     "phpunit/phpunit": "^7.5|^8.5",
     "roave/security-advisories": "dev-latest",
     "symfony/yaml": "^4.4|^5.3"
