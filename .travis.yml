@@ -6,18 +6,20 @@ env:
   global:
     - PHPUNIT_FLAGS="-v"
     - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
+    - XDEBUG_MODE="coverage"
 
 before_install:
-  - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
-  - composer self-update
-  - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-main
+  - composer global require --no-progress --no-scripts --no-plugins symfony/flex
 
 install:
   - travis_retry composer update -n --prefer-dist --prefer-stable
 
 script:
   - composer validate --strict --no-check-lock
-  - ./vendor/bin/phpunit -v
+  - vendor/bin/phpunit -v -c phpunit.xml.dist --coverage-clover tests/logs/clover.xml
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls -v
 
 jobs:
   include:
