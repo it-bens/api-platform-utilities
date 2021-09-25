@@ -12,7 +12,7 @@ case ${COMMAND} in
         docker-compose run --rm -T composer composer install
         ;;
     "composer-update")
-        docker-compose run --rm -T composer composer update"${@:2}"
+        docker-compose run --rm -T composer composer update "${@:2}"
         ;;
     "composer-clean")
         rm -Rf ./vendor ./composer.lock

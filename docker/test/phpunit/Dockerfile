@@ -1,5 +1,5 @@
 ## build context is at docker/
-FROM php:7.2-cli-alpine
+FROM php:7.4-cli-alpine
 
 # install dependencies
 RUN set -ex; \
