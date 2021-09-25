@@ -1,0 +1,46 @@
+{
+  "name": "it-bens/api-platform-utilites-bundle",
+  "description": "",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martin Bens",
+      "email": "martin.bens@it-bens.de"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "api-platform/core": "^2.6",
+    "it-bens/object-transformer-bundle": "^0.1.0",
+    "symfony/config": "^4.4|^5.0",
+    "symfony/dependency-injection": "^4.4|^5.0",
+    "symfony/http-kernel": "^4.4|^5.0"
+  },
+  "require-dev": {
+    "captainhook/plugin-composer": "^5.3",
+    "it-bens/object-transformer-test-utilities": "*@dev",
+    "phpunit/phpunit": "^7.5",
+    "roave/security-advisories": "dev-latest",
+    "symfony/yaml": "^4.4|^5.0"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "ITB\\ApiPlatformUtilitiesBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ITB\\ApiPlatformUtilitiesBundle\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "vendor/bin/captainhook install -f -s"
+    ]
+  }
+}

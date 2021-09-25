@@ -1,0 +1,4 @@
+input_transformations:
+  - { request_class: 'ITB\ObjectTransformerTestUtilities\Object1' }
+output_transformations:
+  - { object_class: 'ITB\ObjectTransformerTestUtilities\Object2', response_class: 'ITB\ObjectTransformerTestUtilities\Object1' }
