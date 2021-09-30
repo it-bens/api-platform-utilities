@@ -1,4 +1,4 @@
 input_transformations:
-  - { request_class: 'Blub.', object_class: 'ITB\ObjectTransformerTestUtilities\Object2' }
+  - { request_class: 'Blub.', object_class: 'ITB\ApiPlatformUtilitiesBundle\Tests\Mock\Object2' }
 output_transformations:
-  - { object_class: 'ITB\ObjectTransformerTestUtilities\Object2', response_class: 'ITB\ObjectTransformerTestUtilities\Object1' }
+  - { object_class: 'ITB\ApiPlatformUtilitiesBundle\Tests\Mock\Object2', response_class: 'ITB\ApiPlatformUtilitiesBundle\Tests\Mock\Object1' }
