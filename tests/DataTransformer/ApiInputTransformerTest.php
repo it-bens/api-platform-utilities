@@ -9,10 +9,10 @@ use ITB\ApiPlatformUtilitiesBundle\DataTransformer\ApiInputTransformer;
 use ITB\ApiPlatformUtilitiesBundle\DataTransformer\InvalidObjectType;
 use ITB\ApiPlatformUtilitiesBundle\DataTransformer\InvalidRequestType;
 use ITB\ApiPlatformUtilitiesBundle\Tests\ITBApiPlatformUtilitiesKernel;
+use ITB\ApiPlatformUtilitiesBundle\Tests\Mock\Object1;
+use ITB\ApiPlatformUtilitiesBundle\Tests\Mock\Object2;
+use ITB\ApiPlatformUtilitiesBundle\Tests\Mock\Object3;
 use ITB\ObjectTransformer\TransformationMediatorInterface;
-use ITB\ObjectTransformerTestUtilities\Object1;
-use ITB\ObjectTransformerTestUtilities\Object2;
-use ITB\ObjectTransformerTestUtilities\Object3;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
@@ -39,14 +39,18 @@ final class ApiInputTransformerTest extends TestCase
         $kernel->boot();
         $container = $kernel->getContainer();
 
+        /** @phpstan-ignore-next-line */
         $this->apiInputTransformer = $container->get('itb_api_platform_utilities.api_input_transformer');
+        /** @phpstan-ignore-next-line */
         $this->transformationMediator = $container->get('itb_object_transformer.transformation_mediator');
+        /** @phpstan-ignore-next-line */
         $this->validator = $container->get('api_platform.validator');
     }
 
     public function testConstructionInvalidTransformationWithInvalidObjectClass(): void
     {
-        $this->setOutputCallback(static function () { });
+        $this->setOutputCallback(static function () {
+        });
 
         $config = Yaml::parseFile(self::INVALID_CONFIGURATION_FILES['input_transformation_with_invalid_object_class']);
         $this->expectExceptionObject(new InvalidObjectType('\'Blub.\' is not a valid Object type.'));
@@ -56,7 +60,8 @@ final class ApiInputTransformerTest extends TestCase
 
     public function testConstructionInvalidTransformationWithInvalidRequestClass(): void
     {
-        $this->setOutputCallback(static function () { });
+        $this->setOutputCallback(static function () {
+        });
 
         $config = Yaml::parseFile(self::INVALID_CONFIGURATION_FILES['input_transformation_with_invalid_request_class']);
         $this->expectExceptionObject(new InvalidRequestType('\'Blub.\' is not a valid Request type.'));
@@ -66,7 +71,8 @@ final class ApiInputTransformerTest extends TestCase
 
     public function testConstructionInvalidTransformationWithoutObjectClass(): void
     {
-        $this->setOutputCallback(static function () { });
+        $this->setOutputCallback(static function () {
+        });
 
         $config = Yaml::parseFile(self::INVALID_CONFIGURATION_FILES['input_transformation_without_object_class']);
         $this->expectExceptionObject(new InvalidObjectType('\'null\' is not a valid Object type.'));
@@ -76,7 +82,8 @@ final class ApiInputTransformerTest extends TestCase
 
     public function testConstructionInvalidTransformationWithoutRequestClass(): void
     {
-        $this->setOutputCallback(static function () { });
+        $this->setOutputCallback(static function () {
+        });
 
         $config = Yaml::parseFile(self::INVALID_CONFIGURATION_FILES['input_transformation_without_request_class']);
         $this->expectExceptionObject(new InvalidRequestType('\'null\' is not a valid Request type.'));

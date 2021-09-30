@@ -9,8 +9,10 @@ use ApiPlatform\Core\DataProvider\PaginatorInterface;
 interface GetCollectionRepositoryInterface
 {
     /**
-     * @param $getCollectionRequest
+     * @param GetCollectionRequest $getCollectionRequest
      * @return iterable|PaginatorInterface
+     *
+     * @phpstan-ignore-next-line
      */
-    public function getCollection($getCollectionRequest);
+    public function getCollection(GetCollectionRequest $getCollectionRequest): iterable|PaginatorInterface;
 }

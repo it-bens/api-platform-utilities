@@ -7,9 +7,9 @@ namespace ITB\ApiPlatformUtilitiesBundle\DataProvider;
 abstract class GetCollectionRequest
 {
     /** @var int $itemsPerPage */
-    public $itemsPerPage = 20;
+    public int $itemsPerPage = 20;
     /** @var int $page */
-    public $page = 1;
+    public int $page = 1;
     /** @var bool $pagination */
-    public $pagination = true;
+    public bool $pagination = true;
 }

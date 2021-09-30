@@ -1,42 +1,39 @@
+# WIP Commits are not build automatically
+if: type = "api" OR commit_message != "WIP"
+
 language: php
-sudo: false
+os: linux
 dist: xenial
+
+cache:
+  apt: true
+  directories:
+    - '$HOME/.composer/cache'
+    - 'vendor'
 
 env:
   global:
     - PHPUNIT_FLAGS="-v"
-    - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
     - XDEBUG_MODE="coverage"
 
-before_install:
-  - composer global require --no-progress --no-scripts --no-plugins symfony/flex
-
 install:
-  - travis_retry composer update -n --prefer-dist --prefer-stable
+  - 'travis_retry composer require symfony/config:${SYMFONY_VERSION} symfony/dependency-injection:${SYMFONY_VERSION} symfony/http-kernel:${SYMFONY_VERSION}'
+  - travis_retry composer -n update --prefer-dist -o
 
 script:
-  - composer validate --strict --no-check-lock
-  - vendor/bin/phpunit -v -c phpunit.xml.dist --coverage-clover tests/logs/clover.xml
+  - travis_retry composer validate --strict --no-check-lock
+  - travis_retry vendor/bin/phpunit -v -c phpunit.xml.dist --coverage-clover tests/logs/clover.xml
+  - travis_retry vendor/bin/phpstan analyse src tests --level max
 
 after_success:
+  - travis_retry composer require --no-progress --no-scripts --no-plugins php-coveralls/php-coveralls -W
   - travis_retry php vendor/bin/php-coveralls -v
 
 jobs:
   include:
-    - php: 7.4
-      env: SYMFONY_REQUIRE="4.4.*"
-      install:
-        - travis_retry composer update -n --prefer-dist
-    - php: 7.4
-      env: SYMFONY_REQUIRE="5.3.*"
-      install:
-        - travis_retry composer update -n --prefer-dist
-
     - php: 8.0
-      env: SYMFONY_REQUIRE="4.4.*"
-      install:
-        - travis_retry composer update -n --prefer-dist
+      env:
+        - SYMFONY_VERSION=4.4.*
     - php: 8.0
-      env: SYMFONY_REQUIRE="5.3.*"
-      install:
-        - travis_retry composer update -n --prefer-dist
+      env:
+        - SYMFONY_VERSION=5.3.*

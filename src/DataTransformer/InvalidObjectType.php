@@ -8,8 +8,8 @@ use ITB\ApiPlatformUtilitiesBundle\Exception\InvalidType;
 
 final class InvalidObjectType extends InvalidType
 {
-    public static function new(string $objectClassName): InvalidObjectType
+    public static function new(string $objectClassName): self
     {
-        return parent::create($objectClassName, 'Object');
+        return new self(parent::createMessage($objectClassName, 'Object'));
     }
 }

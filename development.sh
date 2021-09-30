@@ -29,4 +29,7 @@ case ${COMMAND} in
     "style-fix")
         docker-compose run --rm -T composer /root/.composer/vendor/bin/phpcbf --standard=PSR1,PSR12 "${@:2}"
         ;;
+    "code-check")
+        docker-compose run --rm -T phpunit vendor/bin/phpstan analyse -c phpstan.neon
+        ;;
 esac
