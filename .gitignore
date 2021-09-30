@@ -10,11 +10,11 @@
 ###> symfony/phpunit-bridge ###
 .phpunit
 .phpunit.result.cache
-/phpunit.xml
 /tests/cache
 ###< symfony/phpunit-bridge ###
 
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
+.clover.xml
 ###< phpunit/phpunit ###
