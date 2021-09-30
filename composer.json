@@ -10,17 +10,17 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
-    "api-platform/core": "^2.5",
-    "it-bens/object-transformer-bundle": "^0.1.0",
+    "php": "^8.0",
+    "api-platform/core": "^2.6",
+    "it-bens/object-transformer-bundle": "0.2.*",
     "symfony/config": "^4.4|^5.3",
     "symfony/dependency-injection": "^4.4|^5.3",
     "symfony/http-kernel": "^4.4|^5.3"
   },
   "require-dev": {
     "captainhook/plugin-composer": "^5.3",
-    "it-bens/object-transformer-test-utilities": "*@dev",
-    "phpunit/phpunit": "^7.5|^8.5",
+    "phpstan/phpstan": "^0.12.99",
+    "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-latest",
     "symfony/yaml": "^4.4|^5.3"
   },
