@@ -9,6 +9,12 @@ use ApiPlatform\Core\Validator\ValidatorInterface;
 
 final class ApiPlatformValidatorMock implements ValidatorInterface
 {
+    /**
+     * @param object $data
+     * @param array $context
+     *
+     * @phpstan-ignore-next-line
+     */
     public function validate($data, array $context = []): void
     {
     }

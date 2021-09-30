@@ -8,8 +8,8 @@ use InvalidArgumentException;
 
 abstract class InvalidType extends InvalidArgumentException
 {
-    protected static function create(string $className, string $testedType)
+    protected static function createMessage(string $className, string $testedType): string
     {
-        return new static(sprintf('\'%s\' is not a valid %s type.', $className, $testedType), 0, null);
+        return sprintf('\'%s\' is not a valid %s type.', $className, $testedType);
     }
 }

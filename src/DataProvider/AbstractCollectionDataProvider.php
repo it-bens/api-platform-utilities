@@ -8,11 +8,11 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use Exception;
-use ITB\ApiPlatformUtilitiesBundle\Dto\GetCollectionRepositoryInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 
-abstract class AbstractCollectionDataProvider implements ContextAwareCollectionDataProviderInterface,
-                                                         RestrictedDataProviderInterface
+abstract class AbstractCollectionDataProvider implements
+    ContextAwareCollectionDataProviderInterface,
+    RestrictedDataProviderInterface
 {
     /**
      * @return string
@@ -20,15 +20,17 @@ abstract class AbstractCollectionDataProvider implements ContextAwareCollectionD
     abstract protected static function getResourceClass(): string;
 
     /**
-     * @param string $resourceClass
+     * @param class-string $resourceClass
      * @param string|null $operationName
      * @param array $context
      * @return iterable|PaginatorInterface
+     *
+     * @phpstan-ignore-next-line
      */
-    public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
+    public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable|PaginatorInterface
     {
         // The 'filters' key can be missing if no query parameter was passed.
-        $searchRequest = $this->createSearchRequest(new InputBag($context['filters'] ?? []));
+        $searchRequest = $this->createGetCollectionRequest(new InputBag($context['filters'] ?? []));
 
         try {
             return $this->getResourceRepository()->getCollection($searchRequest);
@@ -38,10 +40,12 @@ abstract class AbstractCollectionDataProvider implements ContextAwareCollectionD
     }
 
     /**
-     * @param string $resourceClass
+     * @param class-string $resourceClass
      * @param string|null $operationName
      * @param array $context
      * @return bool
+     *
+     * @phpstan-ignore-next-line
      */
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
@@ -50,9 +54,11 @@ abstract class AbstractCollectionDataProvider implements ContextAwareCollectionD
 
     /**
      * @param InputBag $query
-     * @return mixed
+     * @return GetCollectionRequest
+     *
+     * @phpstan-ignore-next-line
      */
-    abstract protected function createSearchRequest(InputBag $query);
+    abstract protected function createGetCollectionRequest(InputBag $query): GetCollectionRequest;
 
     /**
      * @return GetCollectionRepositoryInterface

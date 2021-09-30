@@ -9,17 +9,15 @@ use ITB\ObjectTransformer\TransformationMediatorInterface;
 
 final class ApiOutputTransformer implements DataTransformerInterface
 {
-    /** @var TransformationMediatorInterface $transformationMediator */
-    private $transformationMediator;
-    /** @var array $transformations */
-    private $transformations;
-
     /**
-     * @param array $transformations
+     * @param array<array{"object_class": class-string, "response_class": class-string}> $transformations
      * @param TransformationMediatorInterface $transformationMediator
      */
-    public function __construct(array $transformations, TransformationMediatorInterface $transformationMediator) {
-        foreach ($transformations as $transformation) {
+    public function __construct(
+        private array $transformations,
+        private TransformationMediatorInterface $transformationMediator
+    ) {
+        foreach ($this->transformations as $transformation) {
             if (!array_key_exists('object_class', $transformation)) {
                 throw InvalidObjectType::new('null');
             }
@@ -34,16 +32,15 @@ final class ApiOutputTransformer implements DataTransformerInterface
                 throw InvalidResponseType::new($transformation['response_class']);
             }
         }
-
-        $this->transformations = $transformations;
-        $this->transformationMediator = $transformationMediator;
     }
 
     /**
-     * @param array|object $data
+     * @param object $data
      * @param string $to
      * @param array $context
      * @return bool
+     *
+     * @phpstan-ignore-next-line
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
@@ -63,8 +60,10 @@ final class ApiOutputTransformer implements DataTransformerInterface
      * @param string $to
      * @param array $context
      * @return object
+     *
+     * @phpstan-ignore-next-line
      */
-    public function transform($object, string $to, array $context = [])
+    public function transform($object, string $to, array $context = []): object
     {
         return $this->transformationMediator->transform($object, $to);
     }

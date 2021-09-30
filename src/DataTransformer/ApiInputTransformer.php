@@ -6,29 +6,23 @@ namespace ITB\ApiPlatformUtilitiesBundle\DataTransformer;
 
 use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
 use ApiPlatform\Core\Validator\ValidatorInterface;
+use ITB\ObjectTransformer\TransformationEnvelope;
 use ITB\ObjectTransformer\TransformationMediatorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 final class ApiInputTransformer implements DataTransformerInterface
 {
-    /** @var ValidatorInterface $validator */
-    protected $validator;
-    /** @var TransformationMediatorInterface $transformationMediator */
-    private $transformationMediator;
-    /** @var array $transformations */
-    private $transformations;
-
     /**
-     * @param array $transformations
+     * @param array<array{"request_class": class-string, "object_class": class-string}> $transformations
      * @param TransformationMediatorInterface $transformationMediator
      * @param ValidatorInterface $validator
      */
     public function __construct(
-        array $transformations,
-        TransformationMediatorInterface $transformationMediator,
-        ValidatorInterface $validator
+        private array $transformations,
+        private TransformationMediatorInterface $transformationMediator,
+        private ValidatorInterface $validator
     ) {
-        foreach ($transformations as $transformation) {
+        foreach ($this->transformations as $transformation) {
             if (!array_key_exists('request_class', $transformation)) {
                 throw InvalidRequestType::new('null');
             }
@@ -43,17 +37,15 @@ final class ApiInputTransformer implements DataTransformerInterface
                 throw InvalidObjectType::new($transformation['object_class']);
             }
         }
-
-        $this->transformations = $transformations;
-        $this->transformationMediator = $transformationMediator;
-        $this->validator = $validator;
     }
 
     /**
-     * @param array|object $data
+     * @param object $data
      * @param string $to
      * @param array $context
      * @return bool
+     *
+     * @phpstan-ignore-next-line
      */
     public function supportsTransformation($data, string $to, array $context = []): bool
     {
@@ -74,6 +66,8 @@ final class ApiInputTransformer implements DataTransformerInterface
      * @param string $to
      * @param array $context
      * @return object
+     *
+     * @phpstan-ignore-next-line
      */
     public function transform($object, string $to, array $context = []): object
     {
@@ -82,8 +76,9 @@ final class ApiInputTransformer implements DataTransformerInterface
 
         if (array_key_exists(AbstractNormalizer::OBJECT_TO_POPULATE, $context)) {
             $persistedObject = $context[AbstractNormalizer::OBJECT_TO_POPULATE];
+            $envelope = new TransformationEnvelope($object, [new PersistedObjectStamp($persistedObject)]);
 
-            return $this->transformationMediator->transform($object, $to, [$persistedObject]);
+            return $this->transformationMediator->transform($envelope, $to);
         }
 
         return $this->transformationMediator->transform($object, $to);

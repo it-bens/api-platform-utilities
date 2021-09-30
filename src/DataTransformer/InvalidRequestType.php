@@ -10,6 +10,6 @@ final class InvalidRequestType extends InvalidType
 {
     public static function new(string $requestClassName): self
     {
-        return parent::create($requestClassName, 'Request');
+        return new self(parent::createMessage($requestClassName, 'Request'));
     }
 }

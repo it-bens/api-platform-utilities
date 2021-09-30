@@ -5,46 +5,61 @@ declare(strict_types=1);
 namespace ITB\ApiPlatformUtilitiesBundle\Tests;
 
 use ApiPlatform\Core\Validator\ValidatorInterface;
+use Exception;
 use ITB\ApiPlatformUtilitiesBundle\ITBApiPlatformUtilitiesBundle;
 use ITB\ApiPlatformUtilitiesBundle\Tests\Mock\ApiPlatformValidatorMock;
+use ITB\ApiPlatformUtilitiesBundle\Tests\Mock\DummyTransformer;
+use ITB\ApiPlatformUtilitiesBundle\Tests\Mock\DummyTransformerReverse;
 use ITB\ObjectTransformerBundle\ITBObjectTransformerBundle;
-use ITB\ObjectTransformerTestUtilities\DummyTransformer;
-use ITB\ObjectTransformerTestUtilities\DummyTransformerReverse;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 final class ITBApiPlatformUtilitiesKernel extends Kernel
 {
-    /** @var array $apiPlatformUtilitiesConfig */
-    private $apiPlatformUtilitiesConfig;
+    /** @var array{"input_transformations": array, "output_transformations": array}|null $apiPlatformUtilitiesConfig */
+    private ?array $apiPlatformUtilitiesConfig;
 
-    public function __construct(string $environment, bool $debug, $apiPlatformUtilitiesConfig = [])
+    /**
+     * @param string $environment
+     * @param bool $debug
+     * @param array{"input_transformations": array, "output_transformations": array}|null $apiPlatformUtilitiesConfig
+     */
+    public function __construct(string $environment, bool $debug, ?array $apiPlatformUtilitiesConfig = null)
     {
         parent::__construct($environment, $debug);
         $this->apiPlatformUtilitiesConfig = $apiPlatformUtilitiesConfig;
     }
 
+    /**
+     * @return string
+     */
     public function getCacheDir(): string
     {
         return __DIR__ . '/cache/' . spl_object_hash($this);
     }
 
+    /**
+     * @return BundleInterface[]
+     */
     public function registerBundles(): array
     {
         return [
-            //new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            //new \ApiPlatform\Core\Bridge\Symfony\Bundle\ApiPlatformBundle(),
             new ITBObjectTransformerBundle(),
             new ITBApiPlatformUtilitiesBundle(),
         ];
     }
 
+    /**
+     * @param LoaderInterface $loader
+     * @throws Exception
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(function (ContainerBuilder $container) {
-            if (!empty($this->apiPlatformUtilitiesConfig)) {
+            if (null !== $this->apiPlatformUtilitiesConfig) {
                 $container->loadFromExtension('itb_api_platform_utilities', $this->apiPlatformUtilitiesConfig);
             }
 

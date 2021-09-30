@@ -8,8 +8,8 @@ use ITB\ApiPlatformUtilitiesBundle\Exception\InvalidType;
 
 final class InvalidResponseType extends InvalidType
 {
-    public static function new(string $responseClassName): InvalidResponseType
+    public static function new(string $responseClassName): self
     {
-        return parent::create($responseClassName, 'Response');
+        return new self(parent::createMessage($responseClassName, 'Response'));
     }
 }

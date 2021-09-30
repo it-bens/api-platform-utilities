@@ -12,6 +12,9 @@ use Symfony\Component\Yaml\Yaml;
 
 final class BundleConfigurationTest extends TestCase
 {
+    /**
+     * @return array<string, array<string>>
+     */
     public function provideBundleConfigurationsInvalid(): array
     {
         return [
@@ -33,7 +36,8 @@ final class BundleConfigurationTest extends TestCase
      */
     public function testBundleWithConfigurationInvalid(string $configFile): void
     {
-        $this->setOutputCallback(static function () { });
+        $this->setOutputCallback(static function () {
+        });
         $this->expectException(InvalidConfigurationException::class);
 
         $config = Yaml::parseFile($configFile);
