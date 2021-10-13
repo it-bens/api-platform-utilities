@@ -6,9 +6,6 @@ namespace ITB\ApiPlatformUtilitiesBundle\DependencyInjection;
 
 use ApiPlatform\Core\Validator\ValidatorInterface;
 use Exception;
-use ITB\ApiPlatformUtilitiesBundle\DataTransformer\ApiInputTransformer;
-use ITB\ObjectTransformer\TransformationMediatorInterface;
-use ITB\ObjectTransformer\TransformerInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -38,10 +35,12 @@ final class ITBApiPlatformUtilitiesExtension extends Extension
         $inputTransformerDefinition->setArgument(0, $config['input_transformations']);
         $inputTransformerDefinition->setArgument(1, new Reference('itb_object_transformer.transformation_mediator'));
         $inputTransformerDefinition->setArgument(2, new Reference(ValidatorInterface::class));
+        $inputTransformerDefinition->addTag('api_platform.data_transformer');
 
         $outputTransformerDefinition = $container->getDefinition('itb_api_platform_utilities.api_output_transformer');
         $outputTransformerDefinition->setArgument(0, $config['output_transformations']);
         $outputTransformerDefinition->setArgument(1, new Reference('itb_object_transformer.transformation_mediator'));
+        $outputTransformerDefinition->addTag('api_platform.data_transformer');
     }
 
     public function getAlias(): string

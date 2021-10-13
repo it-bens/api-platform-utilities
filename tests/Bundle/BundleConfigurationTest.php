@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ITB\ApiPlatformUtilitiesBundle\Tests\Bundle;
 
 use ITB\ApiPlatformUtilitiesBundle\DataTransformer\ApiInputTransformer;
+use ITB\ApiPlatformUtilitiesBundle\DataTransformer\ApiOutputTransformer;
 use ITB\ApiPlatformUtilitiesBundle\Tests\ITBApiPlatformUtilitiesKernel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -54,5 +55,8 @@ final class BundleConfigurationTest extends TestCase
 
         $apiInputTransformer = $container->get('itb_api_platform_utilities.api_input_transformer');
         $this->assertInstanceOf(ApiInputTransformer::class, $apiInputTransformer);
+
+        $apiInputTransformer = $container->get('itb_api_platform_utilities.api_output_transformer');
+        $this->assertInstanceOf(ApiOutputTransformer::class, $apiInputTransformer);
     }
 }
