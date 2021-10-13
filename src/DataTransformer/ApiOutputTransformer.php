@@ -47,7 +47,7 @@ final class ApiOutputTransformer implements DataTransformerInterface
         foreach ($this->transformations as $transformation) {
             $object = $transformation['object_class'];
             $response = $transformation['response_class'];
-            if ($object === $context['input']['class'] && $response === $to && is_a($data, $object)) {
+            if ($object === $context['resource_class'] && $response === $to && is_a($data, $object)) {
                 return true;
             }
         }

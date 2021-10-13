@@ -91,7 +91,7 @@ final class ApiOutputTransformerTest extends TestCase
     public function testSupportsTransformation(): void
     {
         $request = new Object2(5);
-        $context['input']['class'] = Object2::class;
+        $context['resource_class'] = Object2::class;
 
         $supportsTransformation = $this->apiOutputTransformer->supportsTransformation(
             $request,
@@ -104,7 +104,7 @@ final class ApiOutputTransformerTest extends TestCase
     public function testSupportsTransformationNot(): void
     {
         $request = new Object3('I\'ll be back!');
-        $context['input']['class'] = Object3::class;
+        $context['resource_class'] = Object3::class;
 
         $supportsTransformation = $this->apiOutputTransformer->supportsTransformation(
             $request,
